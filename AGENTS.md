@@ -34,6 +34,21 @@ keys must survive routine service restarts and deployments.
   Distinguish configuration present in Git from services actually running or deployed.
   The roadmap does not authorize deploying every remaining stage automatically.
 
+## Changelog maintenance
+
+- Update [CHANGELOG.md](CHANGELOG.md) under `Unreleased` in the same task as each
+  notable completed feature, behavior change, fix, or security improvement.
+- Use the relevant Keep a Changelog categories: `Added`, `Changed`, `Deprecated`,
+  `Removed`, `Fixed`, and `Security`. Omit empty categories and describe the
+  effect for users or developers rather than copying commit messages.
+- Document breaking changes and any required configuration or migration steps.
+  Minor formatting edits do not need separate entries.
+- Keep future work in this guide's development checklist, not in the changelog.
+  For changes spanning repositories, update each affected repository's changelog.
+- Move unreleased entries into a version/date section when an actual release is
+  made. Do not invent historical releases or treat a commit as a release.
+  A changelog update alone does not authorize tagging, publishing, or deployment.
+
 ## Development progress
 
 Baseline inspected on 2026-09-05, at commit `09f7ca7`.
