@@ -53,6 +53,17 @@ See the [trade guide](../zi-app-api/docs/trading/manual-trade-entry.md#exchange-
 for the new pending-rate/correction schema and downgrade restrictions. Successful
 API integration tests use separate disposable databases, not your local database.
 
+NBU rate resolution additionally requires `20260920191527_AddNbuExchangeRates`
+after `AddManualTradeEntry`. This preserves existing rates/trades and adds
+provenance and resolution audit fields. Downgrade refuses to erase that new history.
+Use the same migration procedure, without resetting the database.
+
+The API needs outbound HTTPS to `bank.gov.ua` for on-demand rate requests, with
+no API key. There is no rate scheduler or automatic backfill to configure.
+See the [NBU guide](../zi-app-api/docs/exchange-rates/nbu-exchange-rates.md)
+for exact-date behavior, errors, and acceptance checks. Automated tests use fixed
+NBU responses. Existing Compose services and volumes are unchanged.
+
 ## Ownership
 
 This repository will eventually own production composition, reverse proxy, TLS,

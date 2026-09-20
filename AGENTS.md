@@ -132,9 +132,17 @@ by backend integration tests create separate disposable databases; passing those
 tests does not mean the user's local database has been migrated.
 
 As of 2026-09-20, manual trade entry requires the API's `AddManualTradeEntry`
-migration after `AddIdentityAuthentication`. See the
+migration after `AddIdentityAuthentication`; NBU resolution additionally requires
+`20260920191527_AddNbuExchangeRates`. See the
 [trade migration contract](../zi-app-api/docs/trading/manual-trade-entry.md#exchange-rate-handoff-and-migrations).
 It preserves existing records and adds pending FX/correction audit support.
 Do not reset the volume. Downgrade refuses to erase correction history or pending
-rates; prefer a forward migration. This documentation update does not mean the
-user's database has been migrated or the infrastructure roadmap has advanced.
+rates; the NBU migration's downgrade also refuses to erase response provenance or
+rate-resolution audit history. Prefer a forward migration.
+
+See the [NBU operations/acceptance guide](../zi-app-api/docs/exchange-rates/nbu-exchange-rates.md).
+On-demand rate fetching needs outbound HTTPS to `bank.gov.ua` without an API key.
+Retries/timeouts are bounded; there is no scheduled import/backfill service to deploy.
+Backend tests use fixed responses plus disposable PostgreSQL, not live NBU requests.
+No Compose or volume changes are needed. This documentation update does not mean
+the user's database has been migrated or the infrastructure roadmap has advanced.

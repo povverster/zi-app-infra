@@ -22,6 +22,10 @@ Planned work and development instructions are in [AGENTS.md](AGENTS.md).
 
 ### Changed
 
+- Documented the API's `AddNbuExchangeRates` migration after manual trade entry,
+  preserved existing data and protected audit history, outbound NBU HTTPS needs,
+  and fixed-response testing. No new services, credentials, or volume reset.
+
 - Documented the API's manual-trade migration requirement and data-preserving
   upgrade/rollback restrictions. Compose settings and existing volumes are unchanged.
 - Local PostgreSQL image from `postgres:18.6-alpine` to `postgres:18.6`.
