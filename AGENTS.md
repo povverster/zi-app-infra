@@ -130,3 +130,11 @@ dotnet ef database update --project src/ZiApp.Infrastructure --startup-project s
 The API does not migrate the development database on startup. Testcontainers used
 by backend integration tests create separate disposable databases; passing those
 tests does not mean the user's local database has been migrated.
+
+As of 2026-09-20, manual trade entry requires the API's `AddManualTradeEntry`
+migration after `AddIdentityAuthentication`. See the
+[trade migration contract](../zi-app-api/docs/trading/manual-trade-entry.md#exchange-rate-handoff-and-migrations).
+It preserves existing records and adds pending FX/correction audit support.
+Do not reset the volume. Downgrade refuses to erase correction history or pending
+rates; prefer a forward migration. This documentation update does not mean the
+user's database has been migrated or the infrastructure roadmap has advanced.

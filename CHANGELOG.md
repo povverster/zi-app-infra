@@ -22,5 +22,7 @@ Planned work and development instructions are in [AGENTS.md](AGENTS.md).
 
 ### Changed
 
+- Documented the API's manual-trade migration requirement and data-preserving
+  upgrade/rollback restrictions. Compose settings and existing volumes are unchanged.
 - Local PostgreSQL image from `postgres:18.6-alpine` to `postgres:18.6`.
 - Standardized text files on LF line endings through Git and editor settings.
