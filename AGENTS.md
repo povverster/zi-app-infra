@@ -146,3 +146,14 @@ Retries/timeouts are bounded; there is no scheduled import/backfill service to d
 Backend tests use fixed responses plus disposable PostgreSQL, not live NBU requests.
 No Compose or volume changes are needed. This documentation update does not mean
 the user's database has been migrated or the infrastructure roadmap has advanced.
+
+As of 2026-10-02, splits/holdings and current trade readers also require
+`20261002125349_AddSplitManagement` after `AddNbuExchangeRates`. See the
+[split migration/acceptance guide](../zi-app-api/docs/holdings/splits-and-holdings.md).
+The migration preserves existing split IDs/ratios, backfills ordering keys, and
+does not invent old provenance. Downgrade blocks loss of new audit history.
+Drain older API writers before upgrading: all quantity-changing writers must
+use the new shared/exclusive transaction advisory lock before portfolio locks.
+Apply the forward migration, then run only updated writers. No new services,
+network dependencies, credentials or volume changes are needed for this stage.
+Holdings reads do not contact NBU. Tests use disposable databases, not the user's DB.

@@ -64,6 +64,20 @@ See the [NBU guide](../zi-app-api/docs/exchange-rates/nbu-exchange-rates.md)
 for exact-date behavior, errors, and acceptance checks. Automated tests use fixed
 NBU responses. Existing Compose services and volumes are unchanged.
 
+## Split/holdings upgrade
+
+The API additionally requires `20261002125349_AddSplitManagement` after
+`AddNbuExchangeRates`. It preserves existing splits/trades/rates/reports and adds
+split ordering/provenance/correction storage. Downgrade refuses to erase new
+split history; use forward migrations without deleting the database.
+
+Drain older API writers before upgrading: this stage coordinates trade and split
+changes with a shared/exclusive ledger lock that older writers do not take.
+Apply the migration to the confirmed target, then run only updated writers.
+Use the [split/holdings acceptance guide](../zi-app-api/docs/holdings/splits-and-holdings.md).
+No Compose/volume changes or extra network configuration are needed; holdings
+GET does not fetch rates. Passing integration tests does not migrate your local DB.
+
 ## Ownership
 
 This repository will eventually own production composition, reverse proxy, TLS,

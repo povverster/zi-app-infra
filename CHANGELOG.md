@@ -22,6 +22,10 @@ Planned work and development instructions are in [AGENTS.md](AGENTS.md).
 
 ### Changed
 
+- Documented the API's `AddSplitManagement` migration, preserved legacy split
+  records, protected audit history and requirement to drain old API writers before
+  adopting the new trade/split locking protocol. Compose and volumes are unchanged.
+
 - Documented the API's `AddNbuExchangeRates` migration after manual trade entry,
   preserved existing data and protected audit history, outbound NBU HTTPS needs,
   and fixed-response testing. No new services, credentials, or volume reset.
