@@ -52,6 +52,8 @@ keys must survive routine service restarts and deployments.
 ## Development progress
 
 Baseline inspected on 2026-09-05, at commit `09f7ca7`.
+Filing-research handoff updated on 2026-10-03: documentation only, no runtime,
+service, migration or volume change. Infrastructure milestones below are unchanged.
 
 - [x] Separate infrastructure Git repository and LF conventions.
 - [x] Local PostgreSQL Compose service: `postgres:18.6`, configurable local
@@ -173,3 +175,21 @@ No new services, secrets, Compose/volume changes or background jobs are needed.
 Stored snapshots include private financial history: backups must retain and protect
 these alongside source/audit rows. Passing disposable-DB tests does not apply this
 migration to the user's development database or complete an infrastructure stage.
+
+## Filing-research handoff
+
+The [2025 review](../zi-app-api/docs/reports/ua-2025-filing-readiness.md) records
+scope decisions, official-source findings and open legal/form/rounding gates.
+The user approved a separate annual preparation summary while retaining current
+one-portfolio drafts. That annual API is not implemented and has no new migration.
+Do not reset the database or restart services for this documentation stage.
+
+Future annual summaries may include outside-app financial inputs and prior-loss
+evidence references. Treat them as private financial data in backup/logging design,
+with owner isolation and preserved snapshots. Research has not enabled official
+filings, tax payable, automated submission or a scheduler.
+
+The added personal `zi-samples` workbooks were inspected read-only by the API
+task; see the [sample audit](../zi-app-api/docs/domain/spreadsheet-sample-audit.md).
+Do not copy these private source files into deployment images, Git or backups
+configured implicitly for this stage. Their availability is not a service dependency.

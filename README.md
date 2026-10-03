@@ -80,6 +80,11 @@ GET does not fetch rates. Passing integration tests does not migrate your local 
 
 ## Saved draft report upgrade
 
+The later [2025 filing-readiness research](../zi-app-api/docs/reports/ua-2025-filing-readiness.md)
+is documentation only. The separate annual-summary API remains planned; no
+additional migration, service or database reset is required for that research.
+The existing saved-report upgrade instructions below are unchanged.
+
 The API requires `20261002140835_AddDraftTaxReports` after `AddSplitManagement`.
 It preserves source data and existing runs, adds nullable report snapshot metadata
 and widens calculated match columns to retain full .NET decimal precision.

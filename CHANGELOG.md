@@ -22,6 +22,10 @@ Planned work and development instructions are in [AGENTS.md](AGENTS.md).
 
 ### Changed
 
+- Added the 2025 filing-research handoff and approved separate annual-summary
+  design, with private-data boundaries and explicit non-filing-ready status.
+  This documentation stage requires no migration, service restart or volume change.
+
 - Documented the API's `AddDraftTaxReports` migration after split management,
   preserved legacy runs/source data, full-precision calculated matches and protected
   snapshot history. Added controlled upgrade and backup guidance; no Compose,
