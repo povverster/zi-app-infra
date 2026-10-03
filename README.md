@@ -78,6 +78,24 @@ Use the [split/holdings acceptance guide](../zi-app-api/docs/holdings/splits-and
 No Compose/volume changes or extra network configuration are needed; holdings
 GET does not fetch rates. Passing integration tests does not migrate your local DB.
 
+## Saved draft report upgrade
+
+The API requires `20261002140835_AddDraftTaxReports` after `AddSplitManagement`.
+It preserves source data and existing runs, adds nullable report snapshot metadata
+and widens calculated match columns to retain full .NET decimal precision.
+Legacy runs are not backfilled with guessed historical inputs. Downgrade refuses
+to erase saved snapshots or narrow calculated values with precision/range loss.
+
+Stop/drain old API writers, back up the confirmed target database and apply the
+forward migration before starting updated instances. Use the
+[report acceptance guide](../zi-app-api/docs/reports/draft-tax-reports.md) to verify
+saved history, exports, missing-rate handling and privacy. Reports are drafts,
+not official filings, and never contact NBU during creation or reads.
+
+No Compose/volume changes or extra services are needed. Backups must preserve
+private report snapshots together with their source/audit data. Automated tests
+use disposable databases and do not migrate the user's development database.
+
 ## Ownership
 
 This repository will eventually own production composition, reverse proxy, TLS,

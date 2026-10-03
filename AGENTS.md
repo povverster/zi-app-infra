@@ -157,3 +157,19 @@ use the new shared/exclusive transaction advisory lock before portfolio locks.
 Apply the forward migration, then run only updated writers. No new services,
 network dependencies, credentials or volume changes are needed for this stage.
 Holdings reads do not contact NBU. Tests use disposable databases, not the user's DB.
+
+As of 2026-10-03, saved draft reports require
+`20261002140835_AddDraftTaxReports` after `AddSplitManagement`. Read the
+[report migration/acceptance guide](../zi-app-api/docs/reports/draft-tax-reports.md).
+It adds nullable immutable-snapshot metadata and widens calculated match columns
+to unconstrained numeric; source-trade/rate precision and existing IDs/data remain
+unchanged. Legacy runs are preserved without invented snapshot backfills.
+Downgrade refuses to erase saved drafts or narrow calculated values with data loss.
+
+Use a controlled schema window: stop/drain old API writers, back up and confirm
+the target database, apply forward migrations, then start updated instances.
+Reports save a single Repeatable Read view of inputs and never call NBU.
+No new services, secrets, Compose/volume changes or background jobs are needed.
+Stored snapshots include private financial history: backups must retain and protect
+these alongside source/audit rows. Passing disposable-DB tests does not apply this
+migration to the user's development database or complete an infrastructure stage.

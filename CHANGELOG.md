@@ -22,6 +22,11 @@ Planned work and development instructions are in [AGENTS.md](AGENTS.md).
 
 ### Changed
 
+- Documented the API's `AddDraftTaxReports` migration after split management,
+  preserved legacy runs/source data, full-precision calculated matches and protected
+  snapshot history. Added controlled upgrade and backup guidance; no Compose,
+  service, credential or volume changes.
+
 - Documented the API's `AddSplitManagement` migration, preserved legacy split
   records, protected audit history and requirement to drain old API writers before
   adopting the new trade/split locking protocol. Compose and volumes are unchanged.
