@@ -22,6 +22,11 @@ Planned work and development instructions are in [AGENTS.md](AGENTS.md).
 
 ### Changed
 
+- Documented the API's `AddAnnualPreparationDrafts` migration, which preserves
+  existing data and protects annual snapshots from destructive downgrade.
+  Updated private financial-data/backup and forward-upgrade guidance. No Compose,
+  services, credentials, volumes or user-database state were changed.
+
 - Added the 2025 filing-research handoff and approved separate annual-summary
   design, with private-data boundaries and explicit non-filing-ready status.
   This documentation stage requires no migration, service restart or volume change.

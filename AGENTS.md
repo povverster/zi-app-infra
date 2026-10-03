@@ -52,8 +52,9 @@ keys must survive routine service restarts and deployments.
 ## Development progress
 
 Baseline inspected on 2026-09-05, at commit `09f7ca7`.
-Filing-research handoff updated on 2026-10-03: documentation only, no runtime,
-service, migration or volume change. Infrastructure milestones below are unchanged.
+Annual-preparation handoff updated on 2026-10-04: infrastructure documentation
+only; the API has a new additive migration. No Compose/service/volume changes or
+user-database migration were performed. Infrastructure milestones remain unchanged.
 
 - [x] Separate infrastructure Git repository and LF conventions.
 - [x] Local PostgreSQL Compose service: `postgres:18.6`, configurable local
@@ -181,13 +182,19 @@ migration to the user's development database or complete an infrastructure stage
 The [2025 review](../zi-app-api/docs/reports/ua-2025-filing-readiness.md) records
 scope decisions, official-source findings and open legal/form/rounding gates.
 The user approved a separate annual preparation summary while retaining current
-one-portfolio drafts. That annual API is not implemented and has no new migration.
-Do not reset the database or restart services for this documentation stage.
+one-portfolio drafts. The [annual preparation API](../zi-app-api/docs/reports/annual-preparation-drafts.md)
+is now implemented and requires `20261003152645_AddAnnualPreparationDrafts`
+after `AddDraftTaxReports`. It adds a separate immutable annual snapshot table,
+owner FK/index/checks and no changes to existing report/source data. Downgrade
+refuses to erase saved annual drafts. Apply forward to a confirmed, backed-up target
+in a controlled schema window; do not reset the database or volume.
 
-Future annual summaries may include outside-app financial inputs and prior-loss
+Annual summaries include outside-app financial inputs and prior-loss
 evidence references. Treat them as private financial data in backup/logging design,
 with owner isolation and preserved snapshots. Research has not enabled official
-filings, tax payable, automated submission or a scheduler.
+filings, tax payable, automated submission or a scheduler. No new services,
+credentials or network dependencies are needed. Only disposable test databases
+were migrated during API verification; the user's local database remains unchanged.
 
 The added personal `zi-samples` workbooks were inspected read-only by the API
 task; see the [sample audit](../zi-app-api/docs/domain/spreadsheet-sample-audit.md).

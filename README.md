@@ -81,9 +81,9 @@ GET does not fetch rates. Passing integration tests does not migrate your local 
 ## Saved draft report upgrade
 
 The later [2025 filing-readiness research](../zi-app-api/docs/reports/ua-2025-filing-readiness.md)
-is documentation only. The separate annual-summary API remains planned; no
-additional migration, service or database reset is required for that research.
-The existing saved-report upgrade instructions below are unchanged.
+remains a legal-research baseline, not filing approval. Its separate annual
+preparation API is now implemented; see the additional upgrade below. The
+existing saved-report upgrade instructions remain unchanged.
 
 The API requires `20261002140835_AddDraftTaxReports` after `AddSplitManagement`.
 It preserves source data and existing runs, adds nullable report snapshot metadata
@@ -100,6 +100,20 @@ not official filings, and never contact NBU during creation or reads.
 No Compose/volume changes or extra services are needed. Backups must preserve
 private report snapshots together with their source/audit data. Automated tests
 use disposable databases and do not migrate the user's development database.
+
+## Annual preparation upgrade
+
+The [annual preparation contract](../zi-app-api/docs/reports/annual-preparation-drafts.md)
+requires `20261003152645_AddAnnualPreparationDrafts` after `AddDraftTaxReports`.
+It adds only a separate owner-scoped snapshot table with its index/constraints.
+Previous portfolio reports, trades and values remain unchanged. Downgrade refuses
+to erase any saved annual drafts; use forward migrations without resetting data.
+
+Confirm/back up the target and follow the same controlled migration procedure.
+API startup and tests do not migrate the user's database. No new Compose service,
+secret, external network dependency or volume is needed. Include annual snapshots,
+outside-app amounts and evidence references in private-data backup/logging design.
+All annual drafts remain non-filing-ready, with no payable or accepted loss deduction.
 
 ## Ownership
 
