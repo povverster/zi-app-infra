@@ -52,9 +52,14 @@ keys must survive routine service restarts and deployments.
 ## Development progress
 
 Baseline inspected on 2026-09-05, at commit `09f7ca7`.
-Annual-preparation handoff updated on 2026-10-04: infrastructure documentation
-only; the API has a new additive migration. No Compose/service/volume changes or
+Annual-preparation/configured-tax handoff updated on 2026-10-04: infrastructure
+documentation only; the API has additive migrations. No Compose/service/volume changes or
 user-database migration were performed. Infrastructure milestones remain unchanged.
+
+Frontend-foundation handoff updated 2026-10-05: README now describes the three-
+terminal local workflow and web-only checks. The app shell is implemented in
+`zi-app-web`; real browser authentication is next. No Compose, volume, service
+configuration or database change was needed. Full local login acceptance remains open.
 
 - [x] Separate infrastructure Git repository and LF conventions.
 - [x] Local PostgreSQL Compose service: `postgres:18.6`, configurable local
@@ -67,9 +72,18 @@ user-database migration were performed. Infrastructure milestones remain unchang
 
 ## Remaining development steps
 
-1. [ ] Document a complete local development workflow across all three repos:
-   database startup, migration application, first-admin bootstrap, API start,
-   and frontend start when available. Verify API readiness and browser login/CSRF.
+Current cross-repository priority (2026-10-05): authentication UI in
+`zi-app-web`, whose foundation is now complete. Follow its ordered product-screen
+stages afterward. The API's user-configured
+tax reporting is implemented; specialist review is not a blocker for that product
+workflow. Infrastructure steps below remain unchanged and are not completed by
+documentation updates. See the configured-tax migration handoff at the end.
+
+1. [ ] Complete local acceptance across all three repos. The README now documents
+   database startup, controlled migration/bootstrap references, API start and
+   frontend start. The web uses localhost:5173 with a same-origin proxy to 5050.
+   Real browser login/CSRF verification awaits the next authentication UI stage;
+   isolated frontend proxy tests do not satisfy it.
    Add optional API/web Compose services when useful without breaking the existing
    database-only workflow.
 2. [ ] Image build/publishing and production Compose: use API/web Dockerfiles from
@@ -200,3 +214,39 @@ The added personal `zi-samples` workbooks were inspected read-only by the API
 task; see the [sample audit](../zi-app-api/docs/domain/spreadsheet-sample-audit.md).
 Do not copy these private source files into deployment images, Git or backups
 configured implicitly for this stage. Their availability is not a service dependency.
+
+## Configured-tax handoff, 2026-10-04
+
+The [configured-report contract](../zi-app-api/docs/reports/configured-tax-reports.md)
+adds year-specific private settings revisions and immutable configured reports.
+It preserves signed negative losses with zero taxes on loss years. Dividends are
+deferred; their rate alone is stored. Official statutory/form validation remains
+separate and does not block this user-configured workflow.
+
+Apply `20261004144649_AddConfiguredTaxReports` after
+`20261003152645_AddAnnualPreparationDrafts` to a confirmed, backed-up target in
+the established controlled schema window. It adds `tax_settings_revisions` and
+`configured_tax_reports` with restrictive source/settings references. Existing
+ledger/report data is unchanged. Downgrade refuses to erase either table's data.
+No reset, Compose change, network dependency, secret or background service is needed.
+Include settings revisions and private report snapshots in backup/restore design.
+The API suite used only disposable test databases; the user's DB was not migrated.
+
+For another AI: read all three AGENTS guides and the linked contract; do not
+repeat the superseded specialist-review/review-package step. Follow the shared
+authentication-UI priority, preserve volumes and apply no user DB migration
+without confirming the target. Commit/push only when requested.
+
+## Frontend foundation handoff, 2026-10-05
+
+Read the [web guide](../zi-app-web/AGENTS.md) and
+[foundation decisions](../zi-app-web/docs/frontend-foundation.md). Node 22.23.2,
+npm 10.9.8, `npm ci` and `npm run dev` start its local app on port 5173.
+`API_PROXY_TARGET` is a web-server-only origin setting, defaulting to
+http://localhost:5050. Keep secrets out of browser VITE_* variables.
+
+The frontend test suite starts isolated loopback servers on 4173/5510; it neither
+uses nor migrates PostgreSQL. Real backend connection checks are read-only and
+manual. A healthy DB check does not prove current migrations or account access.
+No frontend production Dockerfile, TLS proxy, container composition, secret/key
+persistence, release or deployment has been added.

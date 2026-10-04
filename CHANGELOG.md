@@ -22,6 +22,16 @@ Planned work and development instructions are in [AGENTS.md](AGENTS.md).
 
 ### Changed
 
+- Documented the completed frontend foundation and three-terminal local startup
+  workflow, read-only connection checks and isolated browser-test ports. Preserved
+  existing local environment files and identified real login/CSRF acceptance as
+  the next stage. No Compose, service, volume or user-database changes.
+
+- Documented the API's `AddConfiguredTaxReports` migration, private yearly
+  settings/snapshot backup requirements and protected downgrade. Updated the
+  shared next-stage handoff to frontend foundation, without requiring specialist
+  review for user-configured reports. No Compose/service/volume or user DB change.
+
 - Documented the API's `AddAnnualPreparationDrafts` migration, which preserves
   existing data and protects annual snapshots from destructive downgrade.
   Updated private financial-data/backup and forward-upgrade guidance. No Compose,

@@ -16,7 +16,7 @@ zorjd-investments/
 Create your untracked local environment file once:
 
 ```powershell
-Copy-Item .env.example .env
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 ```
 
 Start the database:
@@ -115,7 +115,57 @@ secret, external network dependency or volume is needed. Include annual snapshot
 outside-app amounts and evidence references in private-data backup/logging design.
 All annual drafts remain non-filing-ready, with no payable or accepted loss deduction.
 
-## Ownership
+## Configured-tax reporting upgrade
+
+The [configured-report API](../zi-app-api/docs/reports/configured-tax-reports.md)
+needs `20261004144649_AddConfiguredTaxReports` after `AddAnnualPreparationDrafts`.
+It adds private yearly settings revisions and configured-report snapshots without
+rewriting existing data. Downgrade refuses to erase saved settings/reports.
+Follow the same target-confirmation, backup and controlled forward-migration
+procedure above. No volume reset, new service or Compose change is required.
+Include these private records in backup/restore design. Tests migrated only
+disposable databases, not the user's database.
+
+User-configured reporting does not wait for the older specialist-review gate.
+Official forms remain separate; the web foundation is implemented and the next
+shared product stage is authentication UI.
+
+## Run the local web foundation
+
+The three repositories stay independent. Use separate terminals:
+
+1. **Database**, in `zi-app-infra`: start PostgreSQL with the commands above.
+   Preserve the existing .env and postgres_data volume.
+2. **API**, in `zi-app-api`: follow its [setup/migration guide](../zi-app-api/README.md).
+   Confirm/back up the intended database and apply pending forward migrations
+   deliberately, not as a side effect of opening the frontend. First-admin setup
+   is documented in the [authentication guide](../zi-app-api/docs/security/authentication.md);
+   keep passwords out of Git/logs. Then run:
+
+   ```powershell
+   dotnet run --project src/ZiApp.Api --launch-profile http
+   ```
+
+3. **Web**, in `zi-app-web`, using Node 22.23.2 and npm 10.9.8:
+
+   ```powershell
+   npm ci
+   npm run dev
+   ```
+
+Open [http://localhost:5173](http://localhost:5173). The web server proxies /api
+and /health to the API on port **5050**; the browser uses a single origin.
+Select **Connection → Check connection** for read-only API/database health.
+Readiness does not prove the migration history or account login. Sign-in and
+investment screens are not implemented yet; real cookie/CSRF testing is next.
+
+The shell also runs without the API or Docker and shows an unavailable state
+when a requested check fails. Its automated tests use isolated servers on
+**4173** and **5510**, not PostgreSQL; see the [web README](../zi-app-web/README.md).
+No Compose change, reset or new migration is needed for the web foundation.
+Vite dev/preview servers are local tools, not a production deployment.
+
+## Repository ownership
 
 This repository will eventually own production composition, reverse proxy, TLS,
 backups, monitoring, and deployment configuration. API and web Dockerfiles remain
